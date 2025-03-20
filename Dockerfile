@@ -6,13 +6,13 @@ ENV PYTHONUNBUFFERED 1
 # Set working directory
 WORKDIR /app
 
-# Copy requirements.txt first (for better Docker layer caching)
+# Copy requirements.txt first (for better caching)
 COPY requirements.txt .
 
-# Install Python dependencies
+# Install dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the rest of the project files
+# Copy the entire project into the container
 COPY . .
 
 # Create a non-root user and set it as the owner of the working directory
@@ -27,4 +27,4 @@ USER drf_geouser
 EXPOSE 8000
 
 # Run migrations, collect static files, and start Gunicorn
-CMD ["sh", "-c", "python manage.py migrate && python manage.py collectstatic --noinput && gunicorn drf_geo.wsgi:application --bind 0.0.0.0:${PORT:-8000}"]
+CMD ["sh", "-c", "python drf_geo/manage.py migrate && python drf_geo/manage.py collectstatic --noinput && gunicorn drf_geo.drf_geo.wsgi:application --bind 0.0.0.0:${PORT:-8000}"]
