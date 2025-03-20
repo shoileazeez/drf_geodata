@@ -4,9 +4,9 @@ import os
 import io
 import logging
 import glob
-
+from django.conf import settings
 # Configuration
-TOKEN = "GUJM9VIfQ8tg6tsdS9ZKDVrmfbY9a6MgsUQ5PZKenfM3ijGMKjm9d8KfAFPKNqFU"
+TOKEN = settings.TOKEN
 DATABASES = {
     "DB11LITEBIN": "IP2LOCATION-LITE-DB11.BIN",  # Location database
     "PX12LITEBIN": "IP2PROXY-LITE-PX12.BIN"  # Proxy database
