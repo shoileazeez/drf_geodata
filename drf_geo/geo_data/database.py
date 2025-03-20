@@ -9,7 +9,7 @@ import glob
 TOKEN = "ks0v9sstA8ff3diNcRhvDKPsIMIl6Ztgylx5chBiovbEmmvWc3xBzkkRlX9ZbgYU"
 DATABASES = {
     "DB11LITEBIN": "IP2LOCATION-LITE-DB11.BIN",  # Location database
-    "PX12LITEBIN": "IP2PROXY-LITE-PX12.BIN"  # Proxy database
+    # "PX12LITEBIN": "IP2PROXY-LITE-PX12.BIN"  # Proxy database
 }
 OUTPUT_DIRECTORY = "iplite_database"
 

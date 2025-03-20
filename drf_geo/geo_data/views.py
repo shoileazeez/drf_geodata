@@ -3,7 +3,6 @@ from rest_framework.views import APIView
 from rest_framework.viewsets  import ModelViewSet
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from django.http import JsonResponse
 
 @api_view(["GET"])
 def get_client_ip_auto(request):
@@ -14,7 +13,7 @@ def get_client_ip_auto(request):
 
     return Response({
         "client_ip": ip_address,
-        "location_data": request.location_data,
+        "location_data": location_data,
         "currency": currency,
         "threat_info": threat_info,
     })

@@ -31,7 +31,7 @@ MANIFEST
 #  before PyInstaller builds the exe, so as to inject date/other infos into it.
 *.manifest
 *.spec
-
+drf_geodata/drf_geo/iplite_database/IP2LOCATION-LITE-DB11.BIN
 # Installer logs
 pip-log.txt
 pip-delete-this-directory.txt
