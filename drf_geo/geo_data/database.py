@@ -6,10 +6,10 @@ import logging
 import glob
 
 # Configuration
-TOKEN = "ks0v9sstA8ff3diNcRhvDKPsIMIl6Ztgylx5chBiovbEmmvWc3xBzkkRlX9ZbgYU"
+TOKEN = "I2xXJcpHzSk2sBGdI9olludJXo0uf7qCPtA0VInChCfaUFcTcknNUss0SBOpTH5a"
 DATABASES = {
     "DB11LITEBIN": "IP2LOCATION-LITE-DB11.BIN",  # Location database
-    # "PX12LITEBIN": "IP2PROXY-LITE-PX12.BIN"  # Proxy database
+    "PX12LITEBIN": "IP2PROXY-LITE-PX12.BIN"  # Proxy database
 }
 OUTPUT_DIRECTORY = "iplite_database"
 
