@@ -4,6 +4,7 @@ asgiref==3.8.1
 certifi==2025.1.31
 charset-normalizer==3.4.1
 Django==5.1.6
+django-ipware
 djangorestframework==3.15.2
 idna==3.10
 IP2Location==8.10.5
