@@ -2,7 +2,7 @@ import IP2Location
 import pycountry
 from timezonefinder import TimezoneFinder
 database = IP2Location.IP2Location("iplite_database/IP2LOCATION-LITE-DB11.BIN")
-# proxy_db = IP2Location.IP2Location("iplite_database/IP2PROXY-LITE-PX12.BIN")
+proxy_db = IP2Location.IP2Location("iplite_database/IP2PROXY-LITE-PX12.BIN")
 
 tf = TimezoneFinder()
 
@@ -26,12 +26,12 @@ def get_timezone_name(latitude, longitude):
 
 def get_location_from_ip(ip_address):
     try:
-        # Look up the IP address
+        #Look up the IP address
         response = database.get_all(ip_address)
-        # try:
-        #     proxy_data = proxy_db.get_all(ip_address)
-        # except Exception:
-        #     proxy_data = None
+        try:
+            proxy_data = proxy_db.get_all(ip_address)
+        except Exception:
+            proxy_data = None
         # Extract location data
         
         latitude = response.latitude
@@ -51,17 +51,17 @@ def get_location_from_ip(ip_address):
             'timezone': timezone_name
         }
         
-        # if proxy_data:
-        #     location_data.update({
-        #         "isp": getattr(proxy_data, "isp", "Unknown"),
-        #         "asn": getattr(proxy_data, "asn", "Unknown"),
-        #         "proxy_type": getattr(proxy_data, "proxy_type", "Unknown"),
-        #         "threat": getattr(proxy_data, "threat", "Unknown"),
-        #         "fraud_score": getattr(proxy_data, "fraud_score", "Unknown"),
-        #         "last_seen": getattr(proxy_data, "last_seen", "Unknown"),
-        #         "residential": getattr(proxy_data, "is_residential", False),
-        #         "usage_type": getattr(proxy_data, "usage_type", "Unknown"),
-        #     })
+        if proxy_data:
+            location_data.update({
+                "isp": getattr(proxy_data, "isp", "Unknown"),
+                "asn": getattr(proxy_data, "asn", "Unknown"),
+                "proxy_type": getattr(proxy_data, "proxy_type", "Unknown"),
+                "threat": getattr(proxy_data, "threat", "Unknown"),
+                "fraud_score": getattr(proxy_data, "fraud_score", "Unknown"),
+                "last_seen": getattr(proxy_data, "last_seen", "Unknown"),
+                "residential": getattr(proxy_data, "is_residential", False),
+                "usage_type": getattr(proxy_data, "usage_type", "Unknown"),
+          })
         return location_data
     except Exception as e:
         return {'error': str(e)}
