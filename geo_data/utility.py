@@ -11,8 +11,11 @@ def get_currency_from_country(country_code):
     try:
         country = pycountry.countries.get(alpha_2=country_code)
         if country:
-            currency = pycountry.currencies.get(numeric=country.numeric)
-            return currency.alpha_3 if currency else None  # Returns currency code (e.g., 'USD', 'GBP')
+            currency = next(
+                (curr.alpha_3 for curr in pycountry.currencies if curr.numeric == country.numeric),
+                None
+            )
+            return currency  # Returns currency code (e.g., 'USD', 'GBP')
     except AttributeError:
         return None
 
