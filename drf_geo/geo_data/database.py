@@ -6,7 +6,7 @@ import logging
 import glob
 
 # Configuration
-TOKEN = "I2xXJcpHzSk2sBGdI9olludJXo0uf7qCPtA0VInChCfaUFcTcknNUss0SBOpTH5a"
+TOKEN = "GUJM9VIfQ8tg6tsdS9ZKDVrmfbY9a6MgsUQ5PZKenfM3ijGMKjm9d8KfAFPKNqFU"
 DATABASES = {
     "DB11LITEBIN": "IP2LOCATION-LITE-DB11.BIN",  # Location database
     "PX12LITEBIN": "IP2PROXY-LITE-PX12.BIN"  # Proxy database
