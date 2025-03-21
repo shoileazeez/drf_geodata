@@ -19,3 +19,4 @@ timezonefinder==6.5.8
 user-agents==2.2.0
 whitenoise
 gunicorn
+iso3166
