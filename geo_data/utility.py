@@ -1,4 +1,5 @@
 import IP2Location
+import iso3166
 import pycountry
 from timezonefinder import TimezoneFinder
 database = IP2Location.IP2Location("iplite_database/IP2LOCATION-LITE-DB11.BIN")
@@ -9,14 +10,19 @@ tf = TimezoneFinder()
 def get_currency_from_country(country_code):
     """Fetches currency code based on country code."""
     try:
-        country = pycountry.countries.get(alpha_2=country_code)
-        if country:
-            currency = next(
-                (curr.alpha_3 for curr in pycountry.currencies if curr.numeric == country.numeric),
-                None
-            )
-            return currency  # Returns currency code (e.g., 'USD', 'GBP')
-    except AttributeError:
+        country = pycountry.countries.get(alpha_2=country_code.upper())
+        if not country:
+            return None
+        
+        # Get country info using iso3166
+        country_info = iso3166.countries_by_alpha2.get(country_code.upper())
+        if not country_info:
+            return None
+        
+        # Get currency info
+        currency = pycountry.currencies.get(numeric=country_info.numeric)
+        return currency.alpha_3 if currency else None
+    except Exception:
         return None
 
 def get_timezone_name(latitude, longitude):
