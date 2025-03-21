@@ -14,7 +14,7 @@ class ClientIPMiddleware:
         location_data = get_location_from_ip(ip_address) if ip_address else {}
 
         # Extract country and fetch currency
-        country_code = location_data.get("country")
+        country_code = location_data.get("country_code")
         currency = get_currency_from_country(country_code) if country_code else None
 
         # Attach data to request
