@@ -26,12 +26,29 @@ def get_currency_from_country(country_code):
         return None
 
 def get_timezone_name(latitude, longitude):
-    """Converts lat/lon to a human-readable timezone name."""
+    """Finds the timezone from latitude and longitude."""
     try:
-        timezone = tf.timezone_at(lng=longitude, lat=latitude)
-        return timezone if timezone else "Unknown"
-    except Exception:
-        return "Unknown"
+        # Convert to float in case the values are strings
+        latitude = float(latitude)
+        longitude = float(longitude)
+
+        # Validate coordinates
+        if latitude == 0.0 and longitude == 0.0:
+            return "Unknown (Invalid Coordinates: 0.0, 0.0)"
+
+        # Primary timezone lookup
+        timezone = tf.timezone_at(lat=latitude, lng=longitude)
+
+        # Fallback method if the primary lookup fails
+        if not timezone:
+            timezone = tf.closest_timezone_at(lat=latitude, lng=longitude)
+
+        return timezone if timezone else "Unknown (No Matching Timezone)"
+    except ValueError:
+        return "Unknown (Invalid Coordinate Values)"
+    except Exception as e:
+        return f"Unknown (Error: {str(e)})"
+
 
 def get_location_from_ip(ip_address):
     try:
