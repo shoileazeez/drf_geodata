@@ -1,6 +1,6 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from user_agents import parse
+
 
 @api_view(["GET"])
 def get_client_ip_auto(request):
