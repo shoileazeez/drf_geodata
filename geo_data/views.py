@@ -14,9 +14,11 @@ def get_client_ip_auto(request):
 
     return Response({
         "client_ip": ip_address,
-        "location_data": {location_data, country_info,currency},
-        # "currency": currency,
-        # "country_info": country_info
+        "location_data": {
+            "location": location_data,
+            "country_info": country_info,
+            "currency": currency
+        },
     })
 
 @api_view(["GET"])
