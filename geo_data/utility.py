@@ -4,6 +4,7 @@ import pycountry
 from timezonefinder import TimezoneFinder
 import requests
 database = IP2Location.IP2Location("iplite_database/IP2LOCATION-LITE-DB11.BIN")
+asn_database = IP2Location.IP2Location("iplite_database/IP2LOCATION-LITE-ASN.BIN")
 
 tf = TimezoneFinder()
 
@@ -68,6 +69,7 @@ def get_location_from_ip(ip_address):
     try:
         #Look up the IP address
         response = database.get_all(ip_address)
+        asn_response = asn_database.get_all(ip_address)
         latitude = response.latitude
         longitude = response.longitude
 
@@ -82,7 +84,8 @@ def get_location_from_ip(ip_address):
             'latitude': response.latitude,
             'longitude': response.longitude,
             'zip_code': response.zipcode,
-            'timezone': timezone_name
+            'timezone': timezone_name,
+            'asn': asn_response.asn,
             
         }
 
