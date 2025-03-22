@@ -1,7 +1,7 @@
 import requests
 import logging
 from ipware import get_client_ip
-from .utility import get_location_from_ip, get_currency_from_country
+from .utility import get_location_from_ip, get_currency_from_country,get_country_info
 
 logger = logging.getLogger(__name__)
 
@@ -16,11 +16,13 @@ class ClientIPMiddleware:
         # Extract country and fetch currency
         country_code = location_data.get("country_code")
         currency = get_currency_from_country(country_code) if country_code else None
+        country_info = get_country_info(country_code) if country_code else None
 
         # Attach data to request
         request.ip_address = ip_address
         request.location_data = location_data
         request.currency = currency
+        request.country_info = country_info
 
         return self.get_response(request)
 
