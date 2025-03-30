@@ -5,8 +5,9 @@ import io
 import logging
 import glob
 from django.conf import settings
-# Configuration
+
 TOKEN = settings.TOKEN
+
 DATABASES = {
     "DB11LITEBIN": "IP2LOCATION-LITE-DB11.BIN",  # Location database
     "DBASNLITEBIN": "IP2LOCATION-LITE-ASN.BIN",  # ASN database
