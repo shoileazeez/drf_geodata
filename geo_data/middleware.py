@@ -1,9 +1,8 @@
 import logging
 
-import requests
 from user_agents import parse
 
-from .utility import (get_client_ip, get_country_info,
+from .utility import (get_ip, get_country_info,
                       get_currency_from_country, get_location_from_ip,
                       get_my_device_info)
 
@@ -14,7 +13,7 @@ class ClientIPMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
-        ip_address = get_client_ip(request)  # Get real client IP
+        ip_address = get_ip(request)
         location_data = get_location_from_ip(ip_address) if ip_address else {}
         device_info = get_my_device_info(request)
 

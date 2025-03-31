@@ -96,7 +96,7 @@ def get_location_from_ip(ip_address):
     except Exception as e:
         return {'error': str(e)}
 
-def get_client_ip(request):
+def get_ip(request):
         """Fetches the real public IP address of the request."""
         ip_address, is_routable = get_client_ip(request)
 
