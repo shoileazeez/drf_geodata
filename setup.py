@@ -1,5 +1,4 @@
-from setuptools import setup, find_packages
-
+from setuptools import find_packages, setup
 
 try:
     with open("README.md", "r", encoding="utf-8") as f:
@@ -8,7 +7,7 @@ except FileNotFoundError:
     long_description = "Django plugin for geolocation info."
 
 setup(
-    name="django-geoinfo",
+    name="drf_geoauth",
     version="0.1.0",
     author="Shoile Abdulazeez Adenuga",
     author_email="shoabdulazeez@gmail.com",
@@ -37,8 +36,6 @@ setup(
         "urllib3==2.3.0",
         "timezonefinder==6.5.8",
         "user-agents==2.2.0",
-        "whitenoise==6.6.0",
-        "gunicorn==22.0.0",
         "iso3166==2.1.1",
     ],
     classifiers=[

@@ -1,7 +1,9 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-
-
+from rest_framework.views import APIView
+from Serializer import UserSerializer
+from rest_framework import status
+from rest_framework.response import Response
 @api_view(["GET"])
 def get_client_ip_auto(request):
     ip_address = getattr(request, "ip_address", "Unknown")
@@ -27,5 +29,12 @@ def get_client_location_from_ip(request):
         "client_ip": ip_address,
     })
 
-
+class UserRegistrationView(APIView):
+    def post(self, request):
+        serializer = UserSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"message": "User registered successfully"}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
 

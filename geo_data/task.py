@@ -1,7 +1,9 @@
-from apscheduler.schedulers.background import BackgroundScheduler
-from .database import download_database
-import time
 import logging
+import time
+
+from apscheduler.schedulers.background import BackgroundScheduler
+
+from .database import download_database
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 def start_scheduler():

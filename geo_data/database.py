@@ -1,9 +1,10 @@
-import requests
-import zipfile
-import os
+import glob
 import io
 import logging
-import glob
+import os
+import zipfile
+
+import requests
 from django.conf import settings
 
 TOKEN = settings.TOKEN

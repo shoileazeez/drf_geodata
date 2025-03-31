@@ -1,8 +1,11 @@
 import IP2Location
 import iso3166
 import pycountry
-from timezonefinder import TimezoneFinder
 import requests
+from ipware import get_client_ip
+from timezonefinder import TimezoneFinder
+from user_agents import parse
+
 database = IP2Location.IP2Location("iplite_database/IP2LOCATION-LITE-DB11.BIN")
 asn_database = IP2Location.IP2Location("iplite_database/IP2LOCATION-LITE-ASN.BIN")
 
@@ -93,3 +96,26 @@ def get_location_from_ip(ip_address):
     except Exception as e:
         return {'error': str(e)}
 
+def get_client_ip(request):
+        """Fetches the real public IP address of the request."""
+        ip_address, is_routable = get_client_ip(request)
+
+        if not ip_address:
+            ip_address = "Unknown IP"
+        elif not is_routable:
+            ip_address = "Private Network IP"
+
+        return ip_address 
+    
+def get_my_device_info(request):
+        user_agent_string = request.headers.get('User-Agent', '')
+        user_agent = parse(user_agent_string)
+        device_info = {
+            "device": user_agent.device.family or "Unknown",
+            "browser": user_agent.browser.family or "Unknown",
+            "os": user_agent.os.family or "Unknown",
+            "is_mobile": user_agent.is_mobile,
+            "is_tablet": user_agent.is_tablet,
+            "is_pc": user_agent.is_pc,
+            }
+        return device_info

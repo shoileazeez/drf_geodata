@@ -128,6 +128,8 @@ celerybeat.pid
 # SageMath parsed files
 *.sage.py
 
+myenv/
+
 # Environments
 .env
 .venv
@@ -146,7 +148,7 @@ venv.bak/
 
 # mkdocs documentation
 /site
-
+myenv
 # mypy
 .mypy_cache/
 .dmypy.json
