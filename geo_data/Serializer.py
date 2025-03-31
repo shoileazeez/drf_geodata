@@ -2,7 +2,7 @@ from rest_framework import serializers
 from django.contrib.auth.models import User
 from rest_framework.validators import ValidationError
 from django.conf import settings
-from utility import get_location_from_ip,get_client_ip
+from .utility import get_location_from_ip,get_client_ip
 class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
     confirm_password = serializers.CharField(write_only=True)
