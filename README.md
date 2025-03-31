@@ -73,8 +73,8 @@ The plugin provides built-in API views:
 | `/geo/ip/`             | GET    | Get visitor's IP address.          |
 | `/geo/device/`         | GET    | Get device/browser details.        |
 | `/geo/location/`       | GET    | Get user location details.         |
-| `/auth/register/`      | POST   | Register a new user.               |
-| `/auth/login/`         | POST   | User login.                        |
+| `api/auth/register/`      | POST   | Register a new user.               |
+| `api/auth/login/`         | POST   | User login.                        |
 
 Example request:
 
