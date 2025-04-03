@@ -29,12 +29,28 @@ def get_client_location_from_ip(request):
         "client_ip": ip_address,
     })
 
+@api_view(["GET"])
+def get_client_device_info(request):
+    device_info = request.device_info
+    return Response({
+        "device_info": device_info,
+    })
+
 class UserRegistrationView(APIView):
     def post(self, request):
-        serializer = UserSerializer(data=request.data)
+        # Pass the request object in the context to the serializer
+        serializer = UserSerializer(data=request.data, context={'request': request})
+        
         if serializer.is_valid():
+            # Save the user if validation passes
             serializer.save()
-            return Response({"message": "User registered successfully"}, status=status.HTTP_201_CREATED)
+            return Response({
+                "message": "User registered successfully",
+                "user": serializer.data,  # This includes the 'country' field
+                "country": serializer.validated_data.get("country", "UNKNOWN")
+            }, status=status.HTTP_201_CREATED)
+        
+        # Return validation errors if the data is invalid
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
 

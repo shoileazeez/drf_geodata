@@ -14,7 +14,7 @@ DATABASES = {
     "DBASNLITEBIN": "IP2LOCATION-LITE-ASN.BIN",  # ASN database
 }
 OUTPUT_DIRECTORY = "iplite_database"
-
+# handle data download and extraction of zip file
 def download_database():
     logging.info("🔄 Starting database download process...")
 

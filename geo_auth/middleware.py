@@ -1,18 +1,14 @@
-import logging
-
-from user_agents import parse
-
 from .utility import (get_ip, get_country_info,
                       get_currency_from_country, get_location_from_ip,
                       get_my_device_info)
 
-logger = logging.getLogger(__name__)
 
-class ClientIPMiddleware:
+class GeoAuthMiddleware:
     def __init__(self, get_response):
         self.get_response = get_response
 
     def __call__(self, request):
+        # Extract ip_address , device info and client location data from request
         ip_address = get_ip(request)
         location_data = get_location_from_ip(ip_address) if ip_address else {}
         device_info = get_my_device_info(request)

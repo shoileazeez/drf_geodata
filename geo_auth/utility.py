@@ -5,10 +5,13 @@ import requests
 from ipware import get_client_ip
 from timezonefinder import TimezoneFinder
 from user_agents import parse
-
+import os
+from django.conf import settings
 database = IP2Location.IP2Location("iplite_database/IP2LOCATION-LITE-DB11.BIN")
 asn_database = IP2Location.IP2Location("iplite_database/IP2LOCATION-LITE-ASN.BIN")
-
+GEONAMES_USERNAME = settings.GEONAMES_USERNAME
+if not GEONAMES_USERNAME:
+    raise ValueError("GeoNames username not set. Please configure the GEONAMES_USERNAME environment variable.")
 tf = TimezoneFinder()
 
 def get_currency_from_country(country_code):
@@ -30,7 +33,9 @@ def get_currency_from_country(country_code):
         return None
 
 def get_country_info(country_code):
-    url = f"http://api.geonames.org/countryInfoJSON?country={country_code}&username=hardeynuga"
+    """Fetches country info based on country code"""
+    
+    url = f"http://api.geonames.org/countryInfoJSON?country={country_code}&username={GEONAMES_USERNAME}"
     response = requests.get(url)
     
     if response.status_code == 200:
@@ -69,6 +74,7 @@ def get_timezone_name(latitude, longitude):
 
 
 def get_location_from_ip(ip_address):
+    "Fetches user location data based on IP address"
     try:
         #Look up the IP address
         response = database.get_all(ip_address)
@@ -108,6 +114,7 @@ def get_ip(request):
         return ip_address 
     
 def get_my_device_info(request):
+        """ Fetches the Device info of the request"""
         user_agent_string = request.headers.get('User-Agent', '')
         user_agent = parse(user_agent_string)
         device_info = {

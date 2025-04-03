@@ -7,7 +7,7 @@ except FileNotFoundError:
     long_description = "Django plugin for geolocation info."
 
 setup(
-    name="drf_geoauth",
+    name="geo_auth",
     version="0.1.0",
     author="Shoile Abdulazeez Adenuga",
     author_email="shoabdulazeez@gmail.com",
@@ -15,7 +15,7 @@ setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/shoileazeez/drf_geodata.git",
-    packages=find_packages(include=["geo_data", "geo_data.*"]),
+    packages=find_packages(include=["geo-auth", "geo-auth.*"]),
     include_package_data=True,
     install_requires=[
         "APScheduler==3.11.0",

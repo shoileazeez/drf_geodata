@@ -17,23 +17,20 @@ from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
-
+load_dotenv()
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = "django-insecure-_=i-!b^i6kkb)jc30v*h)ee+jj0a9pw5&5c=z#3%y#(2qy&aff"
 SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split(',')
 
 
 # Application definition
 # Load environment variables from .env file if it exists
-load_dotenv()
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -43,7 +40,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
-    'geo_data',
+    'geo_auth',
 ]
 
 MIDDLEWARE = [
@@ -55,7 +52,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "geo_data.middleware.ClientIPMiddleware",
+    "geo_auth.middleware.GeoAuthMiddleware",
 ]
 
 ROOT_URLCONF = "drf_geo.urls"
@@ -135,3 +132,4 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 TOKEN = os.getenv("TOKEN")
 
 ALLOWED_COUNTRIES = os.getenv("ALLOWED_COUNTRIES")
+GEONAMES_USERNAME = os.getenv("GEONAMES_USERNAME")
