@@ -13,13 +13,13 @@ GeoAuth is a Django plugin that provides authentication and user-related utiliti
 
 ### Using pip
 ```sh
-pip install goe-auth-plugin
+pip install geo-auth
 ```
 
 ### Using Source Code
 ```sh
 git clone https://github.com/shoileazeez/drf_geodata.git  
-cd goe-auth-plugin  
+cd geo_auth 
 pip install -r requirements.txt  
 ```
 
@@ -200,15 +200,15 @@ urlpatterns = [
 Available endpoints:
 
 ```
-GET /geo_auth/client-ip/
+GET /geo_auth/ip/
 # Returns the client's IP address
 # Example response: {"client_ip": "198.51.100.42"}
 
-GET /geo_auth/device-info/
+GET /geo_auth/device/
 # Returns detailed information about the client's device
 # Example response: {"device_info": {"browser": "Chrome", "os": "Windows", "device": "Desktop"}}
 
-GET /geo_auth/location-data/
+GET /geo_auth/location/
 # Returns comprehensive location data based on the client's IP
 # Example response: {"location_data": {"city": "New York", "country": "United States", "latitude": 40.7128, "longitude": -74.0060}}
 ```
@@ -219,9 +219,9 @@ GET /geo_auth/location-data/
 For users who prefer not to install the plugin, you can use our hosted API service to get the same geo-data with simple HTTP requests:
 
 ```
-GET https://api.geoauth.example.com/client-ip/
-GET https://api.geoauth.example.com/device-info/
-GET https://api.geoauth.example.com/location-data/
+GET https://api.geoauth.example.com/ip/
+GET https://api.geoauth.example.com/device/
+GET https://api.geoauth.example.com/location/
 ```
 
 Example code to access the hosted API:
@@ -231,7 +231,7 @@ Example code to access the hosted API:
 import requests
 
 # Get location data
-response = requests.get('https://api.geoauth.example.com/location-data/')
+response = requests.get('https://api.geoauth.example.com/location/')
 data = response.json()
 print(data)
 ```
@@ -242,7 +242,7 @@ import json
 import urllib.request
 
 # Get device info
-with urllib.request.urlopen('https://api.geoauth.example.com/device-info/') as response:
+with urllib.request.urlopen('https://api.geoauth.example.com/device/') as response:
     data = json.loads(response.read().decode())
     print(data)
 ```
@@ -254,7 +254,7 @@ import asyncio
 
 async def get_client_ip():
     async with aiohttp.ClientSession() as session:
-        async with session.get('https://api.geoauth.example.com/client-ip/') as response:
+        async with session.get('https://api.geoauth.example.com/ip/') as response:
             data = await response.json()
             return data
 
@@ -270,7 +270,7 @@ import requests
 
 def get_geo_info(request):
     # Using in Django view
-    response = requests.get('https://api.geoauth.example.com/location-data/')
+    response = requests.get('https://api.geoauth.example.com/location/')
     return response.json()
 ```
 
@@ -284,7 +284,7 @@ app = Flask(__name__)
 @app.route('/user-location')
 def user_location():
     # Forward client info to GeoAuth API
-    response = requests.get('https://api.geoauth.example.com/location-data/')
+    response = requests.get('https://api.geoauth.example.com/location/')
     return jsonify(response.json())
 ```
 

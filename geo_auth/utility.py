@@ -7,8 +7,15 @@ from timezonefinder import TimezoneFinder
 from user_agents import parse
 import os
 from django.conf import settings
-database = IP2Location.IP2Location("iplite_database/IP2LOCATION-LITE-DB11.BIN")
-asn_database = IP2Location.IP2Location("iplite_database/IP2LOCATION-LITE-ASN.BIN")
+APP_DIR = os.path.dirname(os.path.abspath(__file__))
+
+# Define database file paths inside the app directory
+DB11_PATH = os.path.join(APP_DIR, "iplite_database", "IP2LOCATION-LITE-DB11.BIN")
+ASN_PATH = os.path.join(APP_DIR, "iplite_database", "IP2LOCATION-LITE-ASN.BIN")
+
+# Initialize the IP2Location databases
+database = IP2Location.IP2Location(DB11_PATH)
+asn_database = IP2Location.IP2Location(ASN_PATH)
 GEONAMES_USERNAME = settings.GEONAMES_USERNAME
 if not GEONAMES_USERNAME:
     raise ValueError("GeoNames username not set. Please configure the GEONAMES_USERNAME environment variable.")
