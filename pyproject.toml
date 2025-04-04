@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "geo_auth"
-version = "1.0.2"
+version = "1.0.3"
 description = "Django plugin for geolocation info"
 keywords = ["Django", "geolocation", "plugin", "authentication"]
 license = "MIT"
