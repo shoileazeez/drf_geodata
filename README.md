@@ -1,7 +1,3 @@
-Absolutely! Here's the **fully updated and complete GeoAuth Plugin documentation**, with your latest additions included:
-
----
-
 # 🌐 GeoAuth Plugin Documentation
 
 ## 📌 Overview
@@ -116,14 +112,6 @@ Then visit the public URL provided by ngrok (e.g., `https://1234.ngrok.io`) to t
 
 ---
 
-## 🐳 Docker Compatibility
-
-Yes — **GeoAuth works perfectly in Docker**. When building your Docker image:
-
-1. Ensure that your environment variables (`TOKEN`, `GEONAMES_USERNAME`) are available inside the container.
-2. You can still use `ngrok` inside or outside Docker to test geo-data from real IPs in development.
-
----
 
 ## 🔌 Usage Options
 
