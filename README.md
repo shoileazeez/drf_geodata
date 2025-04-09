@@ -226,15 +226,68 @@ After registering plugin URLs (`/geo_auth/`), you get these endpoints:
 
 ---
 
-### Option 5: Hosted API (No Installation Needed)
 
-Use our hosted API service if you prefer not to install GeoAuth:
+### 📡 Option 5: Hosted API (No Installation Needed)
 
-```http
-GET https://api.geoauth.example.com/ip/
-GET https://api.geoauth.example.com/device/
-GET https://api.geoauth.example.com/location/
+If you prefer not to install GeoAuth, you can use our hosted API service.
+
+#### **Hosted API Endpoints**:
+- `GET https://drf-geodata.onrender.com/ip/` — Returns client IP
+- `GET https://drf-geodata.onrender.com/device/` — Returns device info
+- `GET https://drf-geodata.onrender.com/location/` — Returns geo-location data
+
+---
+
+### 🔹 Example – Using Django's `requests` library:
+
+```python
+import requests
+from django.http import JsonResponse
+
+def get_client_ip(request):
+    url = "https://drf-geodata.onrender.com/ip/"
+    response = requests.get(url)
+    return JsonResponse(response.json())
+
+def get_device_info(request):
+    url = "https://drf-geodata.onrender.com/device/"
+    response = requests.get(url)
+    return JsonResponse(response.json())
+
+def get_location_data(request):
+    url = "https://drf-geodata.onrender.com/location/"
+    response = requests.get(url)
+    return JsonResponse(response.json())
 ```
+
+In this example, the Django view makes a `GET` request to the hosted GeoAuth API and returns the response in the view. The data is returned as a JSON response to the client.
+
+---
+
+### 🔹 Example – Using Python's `requests` library (External Usage):
+
+```python
+import requests
+
+def get_client_ip():
+    url = "https://drf-geodata.onrender.com/ip/"
+    response = requests.get(url)
+    return response.json()
+
+def get_device_info():
+    url = "https://drf-geodata.onrender.com/device/"
+    response = requests.get(url)
+    return response.json()
+
+def get_location_data():
+    url = "https://drf-geodata.onrender.com/location/"
+    response = requests.get(url)
+    return response.json()
+```
+
+This example uses the Python `requests` library to send `GET` requests to the hosted GeoAuth API, which can be executed in an external script or service.
+
+---
 
 ---
 
