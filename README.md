@@ -417,10 +417,15 @@ POST /geo_auth/register/
 }
 ```
 
-### Email Already Exists Error
+### Email Already Exists and Username Error
 ```json
 {
-  "email": ["This email address is already in use."]
+    "username": [
+        "A user with that username already exists."
+    ],
+    "email": [
+        "This email address is already in use."
+    ]
 }
 ```
 

@@ -1,6 +1,7 @@
 from django.urls import path
 
-from .views import get_client_ip, get_client_location_from_ip, UserRegistrationView,get_client_device_info, health_check
+from .views import (UserRegistrationView, get_client_device_info,
+                    get_client_ip, get_client_location_from_ip, health_check)
 
 urlpatterns = [
     path("ip/", get_client_ip, name="get_ip_auto"),

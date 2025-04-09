@@ -1,9 +1,12 @@
+from django.http import HttpResponse
+from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
+
 from .Serializer import UserSerializer
-from rest_framework import status
-from rest_framework.response import Response
+
+
 @api_view(["GET"])
 def get_client_location_from_ip(request):
     ip_address = getattr(request, "ip_address", "Unknown")
@@ -52,8 +55,6 @@ class UserRegistrationView(APIView):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
-from django.http import HttpResponse
 
 def health_check(request):
     return HttpResponse(status=200)

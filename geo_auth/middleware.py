@@ -1,6 +1,5 @@
-from .utility import (get_ip, get_country_info,
-                      get_currency_from_country, get_location_from_ip,
-                      get_my_device_info)
+from .utility import (get_country_info, get_currency_from_country, get_ip,
+                      get_location_from_ip, get_my_device_info)
 
 
 class GeoAuthMiddleware:

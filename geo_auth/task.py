@@ -3,7 +3,8 @@ import time
 
 from apscheduler.schedulers.background import BackgroundScheduler
 
-from .database import download_database,run_first_time_setup
+from .database import download_database, run_first_time_setup
+
 
 def start_scheduler():
     scheduler = BackgroundScheduler()

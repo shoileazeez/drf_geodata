@@ -1,6 +1,8 @@
-from rest_framework.test import APITestCase
-from rest_framework import status
 from unittest.mock import MagicMock
+
+from rest_framework import status
+from rest_framework.test import APITestCase
+
 
 class ClientInfoViewTest(APITestCase):
 

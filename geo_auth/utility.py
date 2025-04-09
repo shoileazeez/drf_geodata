@@ -1,16 +1,15 @@
+import os
+from importlib.resources import files
+from pathlib import Path
+
 import IP2Location
 import iso3166
 import pycountry
 import requests
+from django.conf import settings
 from ipware import get_client_ip
 from timezonefinder import TimezoneFinder
 from user_agents import parse
-import os
-from django.conf import settings
-import os
-from importlib.resources import files
-import os
-from pathlib import Path
 
 try:
     # First try the package resource approach (works when installed)
