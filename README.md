@@ -1,434 +1,312 @@
-# GeoAuth Plugin Documentation
+Absolutely! Here's the **fully updated and complete GeoAuth Plugin documentation**, with your latest additions included:
+
+---
+
+# 🌐 GeoAuth Plugin Documentation
 
 ## 📌 Overview
-GeoAuth is a Django plugin that provides authentication and user-related utilities with geo-location support. It allows users to:
+**GeoAuth** is a Django plugin that adds powerful geo-location and user analytics capabilities to your web app. It allows you to:
 
-### 1️⃣ Retrieve their website visitors' IP address.
-### 2️⃣ Fetch device information (browser, OS, etc.).
-### 3️⃣ Obtain location data (country, city, region, latitude, longitude).
-### 4️⃣ Get country details (languages, timezone, currency, etc.).
-### 5️⃣ Restrict user registration based on allowed countries.
+1️⃣ Retrieve visitor **IP addresses**  
+2️⃣ Get detailed **device information** (browser, OS, etc.)  
+3️⃣ Fetch **geo-location data** (country, city, region, lat, long)  
+4️⃣ Access **country details** (languages, timezone, currency)  
+5️⃣ **Restrict user registration** based on country
+
+---
 
 ## 🚀 Installation
 
-### Using pip
-```sh
+### Via pip
+```bash
 pip install geo-auth
 ```
 
-### Using Source Code
-```sh
-git clone https://github.com/shoileazeez/drf_geodata.git  
-cd geo_auth 
-pip install -r requirements.txt  
+### From Source
+```bash
+git clone https://github.com/shoileazeez/drf_geodata.git
+cd geo_auth
+pip install -r requirements.txt
 ```
 
 ---
 
 ## ⚙️ Setup & Configuration
 
-### 1️⃣ Add to Installed Apps
-Modify `settings.py`:
+### 1️⃣ Add Plugin to Installed Apps
+In your `settings.py`:
 ```python
 INSTALLED_APPS = [
-    # Other apps...
+    # other apps...
     'geo_auth',
 ]
 ```
 
 ### 2️⃣ Run Migrations
-```sh
+```bash
 python manage.py migrate
 ```
 
-### 3️⃣ Configure Middleware (Optional)
-If you want automatic geo-data retrieval, add the middleware in `settings.py`:
+### 3️⃣ Enable GeoAuth Middleware
+To automatically enrich every request with geo and device data:
 ```python
 MIDDLEWARE = [
-    # Other middleware...
+    # other middleware...
     'geo_auth.middleware.GeoAuthMiddleware',
 ]
 ```
 
-### 4️⃣ Enable Plugin URLs
-Users should add your plugin’s URLs in their `urls.py`:
+### 4️⃣ Register Plugin URLs
+In your project’s `urls.py`:
 ```python
-from django.urls import path, include  
+from django.urls import path, include
 
 urlpatterns = [
-    # Other URLs...
-    path('geo_auth/', include('geo_auth.urls')),  # Enable Goe Auth Plugin API
+    # other URLs...
+    path('geo_auth/', include('geo_auth.urls')),
 ]
 ```
 
 ---
 
-## 🔑 Token Configuration
+## 🌍 Geo Data Configuration
 
-1. Retrieve the database token from **[IP2Location Lite](https://lite.ip2location.com/)** after registration.
-2. Add the token to the environment variables:
-
-   ```sh
-   export TOKEN="your_api_token_here"
-   ```
-
-3. Modify `settings.py` to retrieve the token dynamically:
-   ```python
-   import os
-
-   TOKEN = os.getenv("TOKEN")
-   ```
-## 🌍 GeoNames Username Configuration
-
-1. Register for a free account at **[GeoNames](https://www.geonames.org/login)**.
-2. Use the same username you registered with and configure it as an environment variable:
-3. Modify `settings.py` to retrieve the username dynamically:
-   ```python
-   import os
-
-   GEONAMES_USERNAME = os.getenv("GEONAMES_USERNAME")
-   ```
-
-# 🔌 How to Use the Geo Plugin
-
-## 🚀 Middleware Usage Options
-
-### Option 1: Automatic Retrieval
-Middleware automatically attaches geo-data to each request.
-
+### 🔑 IP2Location Token
+1. Register at [IP2Location Lite](https://lite.ip2location.com/) and obtain your token.
+2. Add it to your environment variables:
+```bash
+export TOKEN="your_api_token"
+```
+3. Access it in `settings.py`:
 ```python
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
+import os
+TOKEN = os.getenv("TOKEN")
+```
 
+---
+
+### 🌎 GeoNames Username
+1. Sign up at [GeoNames](https://www.geonames.org/login).
+2. Add your GeoNames username to your environment:
+```bash
+export GEONAMES_USERNAME="your_username"
+```
+3. Retrieve it in `settings.py`:
+```python
+GEONAMES_USERNAME = os.getenv("GEONAMES_USERNAME")
+```
+
+---
+
+## 🛠️ Development Notice: IP Address Resolution
+
+🔍 **Important for Local Development**
+
+If you're testing locally (e.g., on `127.0.0.1` or `localhost`), the plugin will only capture **private IPs**, not public ones. To test with real public IP addresses during development:
+
+> 💡 Use [ngrok](https://ngrok.com/) to expose your local server to the internet.
+
+### Example:
+```bash
+ngrok http 8000
+```
+Then visit the public URL provided by ngrok (e.g., `https://1234.ngrok.io`) to trigger real geo-data collection.
+
+✅ In **production**, this is not required — real IP addresses will be captured automatically.
+
+---
+
+## 🐳 Docker Compatibility
+
+Yes — **GeoAuth works perfectly in Docker**. When building your Docker image:
+
+1. Ensure that your environment variables (`TOKEN`, `GEONAMES_USERNAME`) are available inside the container.
+2. You can still use `ngrok` inside or outside Docker to test geo-data from real IPs in development.
+
+---
+
+## 🔌 Usage Options
+
+### Option 1: Automatic Middleware Enrichment
+```python
+from django.http import JsonResponse
 def example_view(request):
-    ip_address = getattr(request, "ip_address", "Unknown")
-    currency = request.currency
-    location_data = request.location_data
-    country_info = request.country_info
-    device_info = request.device_info
-    
-    return Response({
-        "client_ip": ip_address,
+    return JsonResponse({
+        "client_ip": request.ip_address,
         "location_data": {
-            "location": location_data,
-            "country_info": country_info,
-            "currency": currency
+            "location": request.location_data,
+            "country_info": request.country_info,
+            "currency": request.currency
         },
-        "device_info": device_info,
+        "device_info": request.device_info,
     })
 ```
 
-✅ **Best for**: Users who want automatic access to all geo-data in their views.
+---
 
 ### Option 2: API Views with Middleware
-Using the middleware with dedicated API views for specific geo-data:
-
 ```python
-from rest_framework.decorators import api_view
 from rest_framework.response import Response
-
+from rest_framework.decorators import api_view
 @api_view(["GET"])
 def get_client_ip_auto(request):
-    ip_address = getattr(request, "ip_address", "Unknown")
-    currency = request.currency
-    location_data = request.location_data
-    country_info = request.country_info
-    device_info = request.device_info
-    
-    return Response({
-        "client_ip": ip_address,
-        "location_data": {
-            "location": location_data,
-            "country_info": country_info,
-            "currency": currency
-        },
-        "device_info": device_info,
-    })
+    return Response({"client_ip": request.ip_address})
 
 @api_view(["GET"])
-def get_client_location_from_ip(request):
-    ip_address = request.ip_address
-    return Response({
-        "client_ip": ip_address,
-    })
+def location_info(request):
+    return Response({"location": request.location_data})
 
 @api_view(["GET"])
 def get_client_device_info(request):
-    device_info = request.device_info
-    return Response({
-        "device_info": device_info,
+    return Response({"device_info": request.device_info})
+```
+
+---
+
+**Option 3: Utility Function Calls (No Middleware)** section with both **standard Django views** and **Django REST Framework function-based views**:
+
+---
+
+### ✅ Option 3: Utility Function Calls (No Middleware)
+
+You can directly use GeoAuth’s utility functions in your views without enabling middleware.
+
+#### 🔹 Example – Standard Django Views
+
+```python
+from geo_auth.utility import get_ip, get_location_from_ip, get_my_device_info, get_country_info
+from django.http import JsonResponse
+
+def example_view_ip_device(request):
+    return JsonResponse({
+        "ip": get_ip(request),
+        "device": get_my_device_info(request),
+    })
+
+def example_view_country_info(request):
+    country_code = "NG"
+    return JsonResponse({
+        "country_info": get_country_info(country_code),
+    })
+
+def example_view_location_info(request):
+    ip_address = "102.89.22.52"
+    return JsonResponse({
+        "location_info": get_location_from_ip(ip_address),
     })
 ```
 
-✅ **Best for**: Users who want dedicated endpoints for retrieving specific geo-data while still using the middleware.
+---
 
-## 🛠️ Utility Functions Usage
-
-### Option 3: Direct Function Calls
-If you prefer calling functions manually, you can import and use utility functions:
+#### 🔹 Example – Django REST Framework Function-Based Views
 
 ```python
-from geo_auth.utils import get_client_ip, get_device_info, get_location_data
-from django.http import JsonResponse
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from geo_auth.utility import get_ip, get_location_from_ip, get_my_device_info, get_country_info
 
-def example_view(request):
-    data = {
-        "ip": get_client_ip(request),
-        "device": get_device_info(request),
-        "location": get_location_data(request),
-    }
-    return JsonResponse(data)
+@api_view(["GET"])
+def get_ip_and_device(request):
+    return Response({
+        "ip": get_ip(request),
+        "device": get_my_device_info(request),
+    })
+
+@api_view(["GET"])
+def get_country_details(request):
+    country_code = "NG"  # Or get from query params: request.GET.get("country")
+    return Response({
+        "country_info": get_country_info(country_code),
+    })
+
+@api_view(["GET"])
+def get_location_by_ip(request):
+    ip_address = "102.89.22.52"  # Or get from query params: request.GET.get("ip")
+    return Response({
+        "location_info": get_location_from_ip(ip_address),
+    })
 ```
 
-✅ **Best for**: Users who only need geo-data in specific views and prefer not to use middleware.
+### Option 4: Built-In API Endpoints
+After registering plugin URLs (`/geo_auth/`), you get these endpoints:
 
-## 🔗 API Endpoints Usage
+| Endpoint | Description |
+|---------|-------------|
+| `GET /geo_auth/ip/` | Returns client IP |
+| `GET /geo_auth/device/` | Returns device info |
+| `GET /geo_auth/location/` | Returns geo-location data |
 
-### Option 4: Using Pre-configured API Endpoints
-Access geo-data directly through provided URLs after including the plugin's URLs in your project.
+---
 
-```python
-# In your main urls.py
-from django.urls import path, include
+### Option 5: Hosted API (No Installation Needed)
 
-urlpatterns = [
-    # Other URLs...
-    path('geo_auth/', include('geo_auth.urls')),
-]
-```
+Use our hosted API service if you prefer not to install GeoAuth:
 
-Available endpoints:
-
-```
-GET /geo_auth/ip/
-# Returns the client's IP address
-# Example response: {"client_ip": "198.51.100.42"}
-
-GET /geo_auth/device/
-# Returns detailed information about the client's device
-# Example response: {"device_info": {"browser": "Chrome", "os": "Windows", "device": "Desktop"}}
-
-GET /geo_auth/location/
-# Returns comprehensive location data based on the client's IP
-# Example response: {"location_data": {"city": "New York", "country": "United States", "latitude": 40.7128, "longitude": -74.0060}}
-```
-
-✅ **Best for**: Projects that need quick access to geo-data without writing custom views.
-
-### Option 5: Using Hosted API Service
-For users who prefer not to install the plugin, you can use our hosted API service to get the same geo-data with simple HTTP requests:
-
-```
+```http
 GET https://api.geoauth.example.com/ip/
 GET https://api.geoauth.example.com/device/
 GET https://api.geoauth.example.com/location/
 ```
 
-Example code to access the hosted API:
+---
 
-**1. Python - Requests Library**
+## 🔐 Country-Based User Registration Restriction
+
+### Step 1: Allowed Countries
+
+In `settings.py`:
 ```python
-import requests
-
-# Get location data
-response = requests.get('https://api.geoauth.example.com/location/')
-data = response.json()
-print(data)
+ALLOWED_COUNTRIES = ["US", "CA", "UK", "AU"]
 ```
 
-**2. Python - Standard Library (urllib)**
-```python
-import json
-import urllib.request
+### Step 2: Use the Provided `UserSerializer`
 
-# Get device info
-with urllib.request.urlopen('https://api.geoauth.example.com/device/') as response:
-    data = json.loads(response.read().decode())
-    print(data)
+Handles:
+- Country validation via IP
+- Duplicate email check
+- Password confirmation
+
+---
+
+### Step 3: Default Registration View
+```python
+from geo_auth.views import UserRegistrationView
+
+class RegisterView(UserRegistrationView):
+    pass  # Uses default UserSerializer behavior
 ```
 
-**3. Python - AIOHTTP (Async)**
-```python
-import aiohttp
-import asyncio
+---
 
-async def get_client_ip():
-    async with aiohttp.ClientSession() as session:
-        async with session.get('https://api.geoauth.example.com/ip/') as response:
-            data = await response.json()
-            return data
+### 🧩 Customizing the Default Serializer
 
-# Usage
-ip_data = asyncio.run(get_client_ip())
-print(ip_data)
-```
-
-**4. Python - Django Integration**
-```python
-from django.conf import settings
-import requests
-
-def get_geo_info(request):
-    # Using in Django view
-    response = requests.get('https://api.geoauth.example.com/location/')
-    return response.json()
-```
-
-**5. Python - Flask Integration**
-```python
-from flask import Flask, request, jsonify
-import requests
-
-app = Flask(__name__)
-
-@app.route('/user-location')
-def user_location():
-    # Forward client info to GeoAuth API
-    response = requests.get('https://api.geoauth.example.com/location/')
-    return jsonify(response.json())
-```
-
-✅ **Best for**: Users who need geo-data without installing the plugin or for cross-platform applications.
-
-# 🔐 User Registration with Geo Restriction
-
-## 📌 Overview
-GeoAuth plugin provides country-based registration restrictions, allowing you to control which countries can register users on your platform.
-
-## ⚙️ Configuration
-Add allowed countries to your `settings.py`:
-
-```python
-# settings.py
-ALLOWED_COUNTRIES = ["US", "CA", "UK", "AU"]  # Country codes or names
-```
-
-## 🔄 Default Serializer
-The plugin includes a default UserSerializer that handles country validation. You can find the default UserSerializer in geo_auth/serializers.py:
-
-```python
-from rest_framework import serializers
-from django.contrib.auth.models import User
-from rest_framework.validators import ValidationError
-from django.conf import settings
-from .utility import get_location_from_ip, get_client_ip
-
-class UserSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(write_only=True)
-    confirm_password = serializers.CharField(write_only=True)
-    country = serializers.CharField(read_only=True)
-    
-    class Meta:
-        model = User
-        fields = ["username", "email", "password", "confirm_password", "country"]
-        extra_kwargs = {"password": {"write_only": True}}
-            
-    def validate_email(self, value):
-        """handle email validation """
-        if User.objects.filter(email=value).exists():
-            raise serializers.ValidationError("This email address is already in use.")
-        return value
-    
-    def validate(self, data):
-        """ handle country and password validation """
-        request = self.context.get("request")
-        if not request:
-            raise ValidationError({"error": ["Request object is missing."]})
-        
-        # get ip address from request
-        ip_address = getattr(request, "ip_address", None)
-        location_data = get_location_from_ip(ip_address)
-        
-        allowed_countries = settings.ALLOWED_COUNTRIES
-        
-        country_name = location_data.get("country", "")
-        country_code = location_data.get("country_code")
-        
-        allowed_countries_lower = [c.lower() for c in allowed_countries]
-        
-        data["country"] = {
-            "name": country_name.title(),
-            "code": country_code.upper()
-        }
-        
-        # Ensure the country is allowed
-        if country_code not in allowed_countries and country_name not in allowed_countries_lower:
-            raise serializers.ValidationError({
-                "error": "Registration from this country is not allowed.",
-                "country": data["country"]
-            })
-            
-        if len(data['password']) < 8:
-            raise ValidationError("Password must be at least eight characters long.")
-        
-        if data['confirm_password'] != data['password']:
-            raise ValidationError("Confirm password and password must match.")
-        
-        return data
-    
-    def create(self, validated_data):
-        """
-        create the user without saving the confirm_password and the country if not in the model instance
-        """
-        validated_data.pop("confirm_password", None)
-        validated_data.pop("country", None)
-        user = User.objects.create_user(**validated_data)
-        return user
-```
-
-## 🖥️ Default Registration View
-The plugin includes a ready-to-use view for user registration:
-
-```python
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-
-class UserRegistrationView(APIView):
-    def post(self, request):
-        # Pass the request object in the context to the serializer
-        serializer = UserSerializer(data=request.data, context={'request': request})
-        
-        if serializer.is_valid():
-            # Save the user if validation passes
-            serializer.save()
-            return Response({
-                "message": "User registered successfully",
-                "user": serializer.data,  # This includes the 'country' field
-                "country": serializer.validated_data.get("country", "UNKNOWN")
-            }, status=status.HTTP_201_CREATED)
-        
-        # Return validation errors if the data is invalid
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-```
-
-## 🛠️ Customization Options
-
-### ✅ Override the Serializer
-User can extend the default serializer to add custom fields or validation:
+You can override the default serializer to extend user fields (e.g., adding `phone_number`).
 
 ```python
 from geo_auth.serializers import UserSerializer
+from rest_framework import serializers
 
 class CustomUserRegistrationSerializer(UserSerializer):
     phone_number = serializers.CharField(max_length=15, required=True)
-    
+
     class Meta(UserSerializer.Meta):
         fields = UserSerializer.Meta.fields + ["phone_number"]
-        
-    # Add additional validation if needed
+
     def validate_phone_number(self, value):
         if not value.startswith('+'):
             raise serializers.ValidationError("Phone number must include country code")
         return value
 ```
 
-### ✅ Override the View
-User can customize the registration view:
+---
+
+### 🛠 Using Your Custom Serializer in Views
 
 ```python
 from geo_auth.views import UserRegistrationView
 from .serializers import CustomUserRegistrationSerializer
+from rest_framework.response import Response
+from rest_framework import status
 
 class CustomRegisterView(UserRegistrationView):
     def post(self, request):
@@ -446,11 +324,13 @@ class CustomRegisterView(UserRegistrationView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 ```
 
+---
+
 ## 📡 API Usage
 
 ### Registration Endpoint
 ```
-POST /geo-auth/register/
+POST /geo_auth/register/
 ```
 
 ### Request Body
@@ -503,40 +383,21 @@ POST /geo-auth/register/
 }
 ```
 
-Certainly! Here’s the license and contribution sections for your documentation:
+---
+
+## ✅ Summary
+
+| Feature | Works Out of the Box |
+|--------|-----------------------|
+| Django | ✅ |
+| Hosted API | ✅ |
+| Local Dev (Real IPs) | 🔄 Requires `ngrok` |
+| Public Deployment | ✅ Fully functional |
 
 ---
 
-## 📝 License
+## 📞 Support & Contributions
 
-GeoAuth is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
-
----
-
-## 🤝 Contributing
-
-We welcome contributions to the GeoAuth plugin! If you'd like to contribute, please follow these steps:
-
-1. **Fork the repository** on GitHub.
-2. **Clone your fork** to your local machine.
-   ```sh
-   git clone https://github.com/shoileazeez/drf_geodata.git
-   cd geo_auth
-   ```
-3. **Create a new branch** for your changes.
-   ```sh
-   git checkout -b feature/your-feature
-   ```
-4. **Make your changes** and **commit them**.
-   ```sh
-   git commit -m "Add new feature or fix"
-   ```
-5. **Push your changes** to your fork.
-   ```sh
-   git push origin feature/your-feature
-   ```
-6. **Open a pull request** with a description of your changes.
-
-Please ensure your code adheres to the project's style guidelines, and add tests where appropriate. We will review your pull request and merge it once it's ready.
+Need help or want to contribute? Feel free to [open an issue](https://github.com/shoileazeez/drf_geodata/issues) or submit a pull request. We welcome improvements and feedback!
 
 ---

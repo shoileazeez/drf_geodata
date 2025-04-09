@@ -5,7 +5,7 @@ from .Serializer import UserSerializer
 from rest_framework import status
 from rest_framework.response import Response
 @api_view(["GET"])
-def get_client_ip_auto(request):
+def get_client_location_from_ip(request):
     ip_address = getattr(request, "ip_address", "Unknown")
     currency = request.currency
     location_data = request.location_data
@@ -23,7 +23,7 @@ def get_client_ip_auto(request):
     })
 
 @api_view(["GET"])
-def get_client_location_from_ip(request):
+def get_client_ip(request):
     ip_address = request.ip_address
     return Response({
         "client_ip": ip_address,
@@ -40,7 +40,7 @@ class UserRegistrationView(APIView):
     def post(self, request):
         # Pass the request object in the context to the serializer
         serializer = UserSerializer(data=request.data, context={'request': request})
-        
+
         if serializer.is_valid():
             # Save the user if validation passes
             serializer.save()
@@ -49,8 +49,7 @@ class UserRegistrationView(APIView):
                 "user": serializer.data,  # This includes the 'country' field
                 "country": serializer.validated_data.get("country", "UNKNOWN")
             }, status=status.HTTP_201_CREATED)
-        
-        # Return validation errors if the data is invalid
+
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 

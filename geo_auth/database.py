@@ -39,6 +39,9 @@ def download_database():
 
             response = requests.get(download_url, stream=True)
             response.raise_for_status()
+            if response.headers.get("Content-Type") != "application/zip":
+                logging.error(f"❌ Failed to download {db_filename}. Response: {response.text}")
+                continue
 
             # Extract ZIP file
             with zipfile.ZipFile(io.BytesIO(response.content)) as zip_ref:

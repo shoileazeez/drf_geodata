@@ -7,15 +7,25 @@ from timezonefinder import TimezoneFinder
 from user_agents import parse
 import os
 from django.conf import settings
-APP_DIR = os.path.dirname(os.path.abspath(__file__))
+import os
+from importlib.resources import files
+import os
+from pathlib import Path
 
-# Define database file paths inside the app directory
-DB11_PATH = os.path.join(APP_DIR, "iplite_database", "IP2LOCATION-LITE-DB11.BIN")
-ASN_PATH = os.path.join(APP_DIR, "iplite_database", "IP2LOCATION-LITE-ASN.BIN")
+try:
+    # First try the package resource approach (works when installed)
+    package_path = files('geo_auth')
+    database_path = str(package_path.joinpath('iplite_database/IP2LOCATION-LITE-DB11.BIN'))
+    asn_database_path = str(package_path.joinpath('iplite_database/IP2LOCATION-LITE-ASN.BIN'))
+except (ImportError, ModuleNotFoundError):
+    # Fallback for development environment
+    current_dir = Path(__file__).resolve().parent
+    database_path = str(current_dir / 'iplite_database' / 'IP2LOCATION-LITE-DB11.BIN')
+    asn_database_path = str(current_dir / 'iplite_database' / 'IP2LOCATION-LITE-ASN.BIN')
 
-# Initialize the IP2Location databases
-database = IP2Location.IP2Location(DB11_PATH)
-asn_database = IP2Location.IP2Location(ASN_PATH)
+# Initialize databases with the correct paths
+database = IP2Location.IP2Location(database_path)
+asn_database = IP2Location.IP2Location(asn_database_path)
 GEONAMES_USERNAME = settings.GEONAMES_USERNAME
 if not GEONAMES_USERNAME:
     raise ValueError("GeoNames username not set. Please configure the GEONAMES_USERNAME environment variable.")
