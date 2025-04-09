@@ -53,3 +53,7 @@ class UserRegistrationView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+from django.http import HttpResponse
+
+def health_check(request):
+    return HttpResponse(status=200)
