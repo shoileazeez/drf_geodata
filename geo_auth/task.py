@@ -10,7 +10,7 @@ def start_scheduler():
     scheduler = BackgroundScheduler()
     run_first_time_setup()
     
-    scheduler.add_job(download_database, "interval", hours=6, id="database_task", replace_existing=True)
+    scheduler.add_job(download_database, "interval", hours=240, id="database_task", replace_existing=True)
 
     scheduler.start()
     logging.info("✅ APScheduler started successfully!")
